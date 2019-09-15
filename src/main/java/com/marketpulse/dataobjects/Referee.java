@@ -1,7 +1,7 @@
 package com.marketpulse.dataobjects;
 
-import com.marketpulse.dataobjects.abstraction.Person;
+import com.marketpulse.dataobjects.abstraction.Participants;
 
-public class Referee extends Person {
+public class Referee extends Participants {
 
 }

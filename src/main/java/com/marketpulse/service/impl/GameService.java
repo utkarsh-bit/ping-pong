@@ -4,14 +4,13 @@ import com.marketpulse.dataobjects.Game;
 import com.marketpulse.dataobjects.Player;
 import com.marketpulse.service.IGameService;
 
-import java.util.List;
-
 public class GameService implements IGameService {
 
-    public List<Game> createGames(List<Player> players) throws Exception {
+    @Override
+    public Game createGame(Player player1, Player player2) throws Exception {
 
-        if(players.size() % 2 != 0){
-            throw new Exception("Games cannot be created with odd numbers of players");
+        if(player1 == null || player2 == null){
+            throw new Exception("Games cannot be created with two players");
         }
 
         return null;

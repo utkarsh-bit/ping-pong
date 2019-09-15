@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface IGameService {
 
-    List<Game> createGames(List<Player> players) throws Exception;
+    Game createGame(Player player1, Player player2) throws Exception;
 }

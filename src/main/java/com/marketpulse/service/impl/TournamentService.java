@@ -1,9 +1,11 @@
 package com.marketpulse.service.impl;
 
+import com.marketpulse.ParticipantType;
 import com.marketpulse.constants.ApplicationConstants;
 import com.marketpulse.dataobjects.Game;
 import com.marketpulse.dataobjects.Player;
 import com.marketpulse.dataobjects.Referee;
+import com.marketpulse.dataobjects.abstraction.Participants;
 import com.marketpulse.service.ITournamentService;
 import com.marketpulse.viewobjects.PlayerVo;
 import com.marketpulse.viewobjects.RefereeVo;
@@ -19,9 +21,17 @@ public class TournamentService implements ITournamentService {
     private List<Game> tournamentGames;
     private List<Player> tournamentPlayers;
 
+    // Variables to access functionalities of other services
+    private RefereeService refereeService;
+    private PlayerService playerService;
+
     private TournamentService(){
         tournamentGames = new ArrayList<>();
         tournamentPlayers = new ArrayList<>();
+
+        // Get instances of helper classes
+        refereeService = RefereeService.getInstance();
+        playerService = PlayerService.getInstance();
     }
 
     /**
@@ -35,41 +45,36 @@ public class TournamentService implements ITournamentService {
         return instance;
     }
 
-    public void initiateTournament(List<PlayerVo> players) throws Exception {
+    @Override
+    public void initiateTournament(List<Participants> participants) throws Exception {
 
-        if(players.size() < 8){
-            throw new Exception("Players cannot be less than 8.");
+        if(participants.size() < 9){
+            throw new Exception("Participants count should be 9.");
         }
 
-        // Add referee to the Game
-        RefereeVo referee = new RefereeVo();
-        referee.setName(ApplicationConstants.refereeName);
-        this.referee = addReferee(referee);
-
-        // Add players to game
-        for(PlayerVo playerVo: players){
-            tournamentPlayers.add(addPlayer(playerVo));
+        // Add participants to game
+        for(Participants participant: participants){
+            // Add referee to the tournament
+            if(participant.getParticipantType() == ParticipantType.REFEREE){
+                RefereeVo referee = new RefereeVo();
+                referee.setName(participant.getName());
+                this.referee = refereeService.createReferee(referee);
+            }
+            // Add players to the game
+            else{
+                PlayerVo playerVo = new PlayerVo();
+                playerVo.setName(participant.getName());
+                tournamentPlayers.add(playerService.createPlayer(playerVo));
+            }
         }
 
+        // Referee creates the games for the tournament
 
 
     }
 
-    public Referee addReferee(RefereeVo refereeVo){
+    private void initiateGameCreation(){
 
-        Referee referee = new Referee();
-
-        if(null == refereeVo){
-            referee.setName(ApplicationConstants.refereeName);
-
-        }else{
-
-        }
-        return referee;
-    }
-
-    public Player addPlayer(PlayerVo player){
-        return null;
     }
 
 }
