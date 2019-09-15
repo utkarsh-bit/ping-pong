@@ -1,0 +1,7 @@
+# Build the project
+javac -cp ./src/main/java/ ./src/main/java/com/marketpulse/Main.java -d ./out/
+jar cvfm MarketPulse.jar ./src/main/resources/META-INF/MANIFEST.MF -C ./out/ .
+
+# Run test suite
+javac -cp MarketPulse.jar:lib/junit-platform-console-standalone-1.5.1.jar src/test/java/com/MarketPulse/ApplicationTest.java -d ./out/
+java -jar lib/junit-platform-console-standalone-1.5.1.jar --class-path ./out/ --scan-class-path
