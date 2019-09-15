@@ -13,13 +13,26 @@ import java.util.List;
 
 public class TournamentService implements ITournamentService {
 
+    private static TournamentService instance;
+
     private Referee referee;
     private List<Game> tournamentGames;
     private List<Player> tournamentPlayers;
 
-    TournamentService(){
+    private TournamentService(){
         tournamentGames = new ArrayList<>();
         tournamentPlayers = new ArrayList<>();
+    }
+
+    /**
+     * Function to make sure class is a singleton
+     * @return class instance
+     */
+    public TournamentService getInstance(){
+        if(instance == null){
+            instance = new TournamentService();
+        }
+        return instance;
     }
 
     public void initiateTournament(List<PlayerVo> players) throws Exception {
@@ -39,6 +52,7 @@ public class TournamentService implements ITournamentService {
         }
 
 
+
     }
 
     public Referee addReferee(RefereeVo refereeVo){
@@ -51,7 +65,7 @@ public class TournamentService implements ITournamentService {
         }else{
 
         }
-        return null;
+        return referee;
     }
 
     public Player addPlayer(PlayerVo player){
