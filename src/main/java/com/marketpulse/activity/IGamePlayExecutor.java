@@ -19,7 +19,7 @@ public interface IGamePlayExecutor {
 
     GameType getGameType();
 
-    List<Game> execute(List<Game> games);
+    List<Game> execute(List<Game> games) throws Exception;
 
     boolean shouldExecute(List<Game> games);
 

@@ -11,6 +11,7 @@ import com.marketpulse.dataobjects.Game;
 import com.marketpulse.dataobjects.Player;
 import com.marketpulse.service.IGameService;
 import com.marketpulse.utility.ApplicationUtility;
+import com.marketpulse.utility.GamePlayUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public class GameService implements IGameService {
             throw new Exception("Games cannot be created with two players");
         }
 
-        int random = ApplicationUtility.getRandomNumber();
+        int random = ApplicationUtility.getRandomNumber(0,0);
 
         // Set game mode for players
         if(random%2 == 0){
@@ -86,7 +87,68 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public Game playGame(Game game) {
-        return null;
+    public Game playGame(Game game) throws InterruptedException {
+
+        // Initiate the game
+        while(game.getPlayer1().getPlayerPoint() < 5 || game.getPlayer2().getPlayerPoint() < 5){
+
+            // Thread for player1 move
+            GamePlayUtility gamePlayUtilityP1 = new GamePlayUtility(game.getPlayer1());
+            // Thread for player2 move
+            GamePlayUtility gamePlayUtilityP2 = new GamePlayUtility(game.getPlayer2());
+
+            // run for player1
+            gamePlayUtilityP1.start();
+            //run for player2
+            gamePlayUtilityP2.start();
+
+            // Wait for process to complete
+            gamePlayUtilityP1.join();
+            gamePlayUtilityP2.join();
+
+            // Analyze the move
+            game = evaluateResult(game, gamePlayUtilityP1.getResult(), gamePlayUtilityP2.getResult());
+
+        }
+
+        return game;
+    }
+
+    private Game evaluateResult(Game game, List<Integer> resultPlayer1, List<Integer> resultPlayer2){
+
+        // If player1 was playing OFFENSIVE
+        if(game.getPlayer1().getGameMode().toString().equalsIgnoreCase(GameMode.OFFENSIVE.toString())){
+            // Check whether the offensive move is present in defense array
+            if(resultPlayer2.contains(resultPlayer1.get(0))){
+                // Defense successful
+                // Add point to player2 and change GameModes for both players
+                game.getPlayer2().setPlayerPoint(game.getPlayer2().getPlayerPoint()+1);
+                game.getPlayer1().setGameMode(GameMode.DEFENSIVE);
+                game.getPlayer2().setGameMode(GameMode.OFFENSIVE);
+            }
+            // Defence fails
+            else{
+                // Increase player1's point
+                game.getPlayer1().setPlayerPoint(game.getPlayer1().getPlayerPoint()+1);
+            }
+        }
+        // If player2 was playing OFFENSIVE
+        else{
+            // Check whether the offensive move is present in defense array
+            if(resultPlayer1.contains(resultPlayer2.get(0))){
+                // Defense successful
+                // Add point to player2 and change GameModes for both players
+                game.getPlayer1().setPlayerPoint(game.getPlayer1().getPlayerPoint()+1);
+                game.getPlayer2().setGameMode(GameMode.DEFENSIVE);
+                game.getPlayer1().setGameMode(GameMode.OFFENSIVE);
+            }
+            // Defence fails
+            else{
+                // Increase player1's point
+                game.getPlayer2().setPlayerPoint(game.getPlayer2().getPlayerPoint()+1);
+            }
+        }
+
+        return game;
     }
 }

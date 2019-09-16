@@ -36,5 +36,5 @@ public interface IGameService {
      * @param game Game to be played
      * @return Resultant Game Object
      */
-    Game playGame(Game game);
+    Game playGame(Game game) throws InterruptedException;
 }
