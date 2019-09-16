@@ -37,7 +37,7 @@ public class TournamentService implements ITournamentService {
      * Function to make sure class is a singleton
      * @return class instance
      */
-    public TournamentService getInstance(){
+    public static TournamentService getInstance(){
         if(instance == null){
             instance = new TournamentService();
         }
@@ -45,34 +45,22 @@ public class TournamentService implements ITournamentService {
     }
 
     @Override
-    public void initiateTournament(List<Participants> participants) throws Exception {
+    public void initiateTournament(List<PlayerVo> playerVo, RefereeVo refereeVo) throws Exception {
 
-        if(participants.size() < 9){
+        if(playerVo.size() < 8 || null == refereeVo){
             throw new Exception("Participants count should be 9.");
         }
 
         // Add participants to game
-        for(Participants participant: participants){
-            // Add referee to the tournament
-            if(participant.getParticipantType() == ParticipantType.REFEREE){
-                RefereeVo referee = new RefereeVo();
-                referee.setName(participant.getName());
-                this.referee = refereeService.createReferee(referee);
-            }
-            // Add players to the game
-            else{
-                PlayerVo playerVo = new PlayerVo();
-                playerVo.setName(participant.getName());
-                tournamentPlayers.add(playerService.createPlayer(playerVo));
-            }
+        for(PlayerVo player: playerVo){
+            // Add player to tournament
+            tournamentPlayers.add(playerService.createPlayer(player));
         }
+
+        this.referee = refereeService.createReferee(refereeVo);
 
         // Referee creates the games for the tournament
         this.refereeService.startTournament(tournamentPlayers);
-
-    }
-
-    private void initiateGameCreation(){
 
     }
 

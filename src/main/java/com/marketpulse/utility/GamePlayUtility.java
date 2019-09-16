@@ -2,7 +2,6 @@ package com.marketpulse.utility;
 
 import com.marketpulse.constants.ApplicationConstants;
 import com.marketpulse.constants.GameMode;
-import com.marketpulse.constants.GameType;
 import com.marketpulse.dataobjects.Player;
 
 import java.util.ArrayList;
@@ -35,6 +34,8 @@ public class GamePlayUtility extends Thread {
             result.addAll(gameMoveValues);
             // Shuffle the move values to randomize the data
             Collections.shuffle(result);
+            // Trim the array according to players defense array size
+            result = result.subList(0, player.getDefenceArraySize());
         }
     }
 

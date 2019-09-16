@@ -24,7 +24,7 @@ public interface IGameService {
      * @param gameType Type of Game stage
      * @throws Exception if invalid params are passed
      */
-    void createTournamentGames(List<Player> players, GameType gameType) throws Exception;
+    void createTournamentStageGames(List<Player> players, GameType gameType) throws Exception;
 
     /**
      * Function will create a chain for Games according to stages in tournament
@@ -37,4 +37,6 @@ public interface IGameService {
      * @return Resultant Game Object
      */
     Game playGame(Game game) throws InterruptedException;
+
+    void startTournament(List<Player> players) throws Exception;
 }

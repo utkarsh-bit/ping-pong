@@ -27,18 +27,21 @@ public class PlayerService implements IPlayerService {
     public Player createPlayer(PlayerVo playerVo){
 
         // Get a random Id for player
-        int id = ApplicationUtility.getRandomNumber();
+        int id = ApplicationUtility.getRandomNumber(0,0);
 
         if(null == playerVo){
             playerVo = new PlayerVo();
             playerVo.setName(
                     ApplicationConstants.dummyPlayerPrefix.concat(Integer.toString(id)));
+            playerVo.setDefenceArraySize(ApplicationConstants.defaultDefensiveArraySize);
 
         }
         // Create player object
         Player player = new Player();
         player.setId(id);
         player.setName(playerVo.getName());
+        player.setDefenceArraySize(playerVo.getDefenceArraySize());
+        player.setPlayerPoint(0);
 
         return player;
     }

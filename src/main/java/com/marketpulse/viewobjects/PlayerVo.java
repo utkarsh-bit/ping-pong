@@ -1,16 +1,28 @@
 package com.marketpulse.viewobjects;
 
+import com.marketpulse.ParticipantType;
+
 public class PlayerVo {
 
     private String name;
-    private int defenceArratSize;
+    private int defenceArraySize;
+    private ParticipantType participantType;
 
     @Override
     public String toString() {
         return "PlayerVo{" +
                 "name='" + name + '\'' +
-                ", defenceArratSize=" + defenceArratSize +
+                ", defenceArraySize=" + defenceArraySize +
+                ", participantType=" + participantType +
                 '}';
+    }
+
+    public ParticipantType getParticipantType() {
+        return participantType;
+    }
+
+    public void setParticipantType(ParticipantType participantType) {
+        this.participantType = participantType;
     }
 
     public String getName() {
@@ -21,11 +33,11 @@ public class PlayerVo {
         this.name = name;
     }
 
-    public int getDefenceArratSize() {
-        return defenceArratSize;
+    public int getDefenceArraySize() {
+        return defenceArraySize;
     }
 
-    public void setDefenceArratSize(int defenceArratSize) {
-        this.defenceArratSize = defenceArratSize;
+    public void setDefenceArraySize(int defenceArraySize) {
+        this.defenceArraySize = defenceArraySize;
     }
 }

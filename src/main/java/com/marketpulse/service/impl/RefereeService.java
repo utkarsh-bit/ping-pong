@@ -10,7 +10,6 @@ import com.marketpulse.service.IRefereeService;
 import com.marketpulse.utility.ApplicationUtility;
 import com.marketpulse.viewobjects.RefereeVo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RefereeService implements IRefereeService {
@@ -38,7 +37,7 @@ public class RefereeService implements IRefereeService {
     @Override
     public Referee createReferee(RefereeVo refereeVo) {
 
-        int id = ApplicationUtility.getRandomNumber();
+        int id = ApplicationUtility.getRandomNumber(0,0);
 
         if(null == refereeVo){
             refereeVo = new RefereeVo();
@@ -56,18 +55,24 @@ public class RefereeService implements IRefereeService {
     @Override
     public void startTournament(List<Player> players) throws Exception {
 
-        if(null == players || players.size() == 0){
-            throw new Exception("Tournament cannot start without players");
+        if(null == players || players.size() < 8){
+            throw new Exception("Tournament cannot start without 8 players");
         }
-        // Create tournament games for League stage
-        this.gameService.createTournamentGames(players, GameType.LEAGUE);
 
         // Create GamePlay activity chain
         this.gameService.createGamePlayChain();
+
+        // start tournament
+        this.gameService.startTournament(players);
     }
 
     @Override
     public void displayGameResult(Game game) {
+
+    }
+
+    @Override
+    public void saveGameResult(Game game) {
 
     }
 

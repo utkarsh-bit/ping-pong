@@ -14,4 +14,6 @@ public interface IRefereeService {
     void startTournament(List<Player> players) throws Exception;
 
     void displayGameResult(Game game);
+
+    void saveGameResult(Game game);
 }

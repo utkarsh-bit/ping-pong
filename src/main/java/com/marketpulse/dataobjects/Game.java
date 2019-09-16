@@ -4,6 +4,7 @@ import com.marketpulse.constants.GameType;
 
 public class Game {
 
+    private String gameId;
     private Player player1;
     private Player player2;
     private GameType gameType;
@@ -11,10 +12,19 @@ public class Game {
     @Override
     public String toString() {
         return "Game{" +
-                "player1=" + player1 +
+                "gameId=" + gameId +
+                ", player1=" + player1 +
                 ", player2=" + player2 +
                 ", gameType=" + gameType +
                 '}';
+    }
+
+    public String getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
     }
 
     public Player getPlayer1() {

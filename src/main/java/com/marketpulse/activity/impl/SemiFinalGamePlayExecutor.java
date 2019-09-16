@@ -4,6 +4,7 @@ import com.marketpulse.activity.IGamePlayExecutor;
 import com.marketpulse.constants.ApplicationConstants;
 import com.marketpulse.constants.GameType;
 import com.marketpulse.dataobjects.Game;
+import com.marketpulse.dataobjects.Player;
 
 import java.util.List;
 
@@ -38,24 +39,32 @@ public class SemiFinalGamePlayExecutor implements IGamePlayExecutor {
         }else {
             throw new Exception(games.get(0).getGameType().toString()+": Stage games failed to execute.");
         }
-        return null;
+        return games;
     }
 
     @Override
     public boolean shouldExecute(List<Game> games) {
 
         // Return false if count of games for this stage is not 4 or GameType is not LEAGUE
-        if(games.size() < ApplicationConstants.leagueGameSize ||
-                !games.get(0).getGameType().toString().equalsIgnoreCase(GameType.LEAGUE.toString())){
+        if(games.size() < ApplicationConstants.semiFinalsGameSize ||
+                !games.get(0).getGameType().toString().equalsIgnoreCase(GameType.SEMIS.toString())){
             return false;
         }
         return true;
     }
 
+//    @Override
+//    public void notifyReferee(Game game) {
+//        // Notify referee to display result
+//        this.getRefereeServiceInstance().displayGameResult(game);
+//        // Add game to result holder
+//        this.getRefereeServiceInstance().saveGameResult(game);
+//    }
+
     @Override
-    public void notifyReferee(Game game) {
-        // Notify referee to display result
-        this.getRefereeServiceInstance().displayGameResult(game);
+    public void createStageGames(List<Player> players) throws Exception {
+        // Create game for SemiFinal stage
+        this.getGameServiceInstance().createTournamentStageGames(players, getGameType());
     }
 
 }

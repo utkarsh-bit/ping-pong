@@ -18,6 +18,8 @@ import java.util.List;
 
 public class GameService implements IGameService {
 
+    private static int gameNumber = 1;
+
     private static GameService instance;
 
     private List<Game> tournamentGames;
@@ -25,7 +27,7 @@ public class GameService implements IGameService {
     private List<IGamePlayExecutor> gamePlayExecutors;
 
     private GameService(){
-        this.tournamentGames  = new ArrayList<>();
+        this.gamePlayExecutors = new ArrayList<>();
     }
 
     public static GameService getInstance(){
@@ -42,16 +44,23 @@ public class GameService implements IGameService {
             throw new Exception("Games cannot be created with two players");
         }
 
+        // Assign points to players
+        player1.setPlayerPoint(0);
+        player2.setPlayerPoint(0);
+
         int random = ApplicationUtility.getRandomNumber(0,0);
 
         // Set game mode for players
         if(random%2 == 0){
             player1.setGameMode(GameMode.OFFENSIVE);
+            player2.setGameMode(GameMode.DEFENSIVE);
         }else{
             player1.setGameMode(GameMode.DEFENSIVE);
+            player2.setGameMode(GameMode.OFFENSIVE);
         }
         // Create game object
         Game game = new Game();
+        game.setGameId(ApplicationConstants.gameIdPrefix+gameNumber++);
         game.setPlayer1(player1);
         game.setPlayer2(player2);
         game.setGameType(gameType);
@@ -61,12 +70,14 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public void createTournamentGames(List<Player> players, GameType gameType) throws Exception {
+    public void createTournamentStageGames(List<Player> players, GameType gameType) throws Exception {
+
+        this.tournamentGames  = new ArrayList<>();
 
         if(null != players && players.size() != 0 && players.size()% ApplicationConstants.participantsPerGame==0){
 
             int iterator = players.size();
-            for(int i = 0; i<iterator; i++){
+            for(int i = 0; i<iterator; i+=2){
                 // Call to game service to create games
                 this.tournamentGames.add(this.createGame(players.get(i), players.get(i+1), gameType));
             }
@@ -90,7 +101,8 @@ public class GameService implements IGameService {
     public Game playGame(Game game) throws InterruptedException {
 
         // Initiate the game
-        while(game.getPlayer1().getPlayerPoint() < 5 || game.getPlayer2().getPlayerPoint() < 5){
+        while(game.getPlayer1().getPlayerPoint() < ApplicationConstants.upperBoundForPlayerPoints
+                && game.getPlayer2().getPlayerPoint() < ApplicationConstants.upperBoundForPlayerPoints){
 
             // Thread for player1 move
             GamePlayUtility gamePlayUtilityP1 = new GamePlayUtility(game.getPlayer1());
@@ -112,6 +124,27 @@ public class GameService implements IGameService {
         }
 
         return game;
+    }
+
+    @Override
+    public void startTournament(List<Player> players) throws Exception {
+
+        for(IGamePlayExecutor playExecutor: this.gamePlayExecutors){
+            // Create games for current stage
+            playExecutor.createStageGames(players);
+            // Execute Stage
+            List<Game> stageGameResult = playExecutor.execute(this.tournamentGames);
+
+            // Get list of winners
+            players = new ArrayList<>();
+            for(Game game: stageGameResult){
+                if(game.getPlayer1().getPlayerPoint()>game.getPlayer2().getPlayerPoint()){
+                    players.add(game.getPlayer1());
+                }else{
+                    players.add(game.getPlayer2());
+                }
+            }
+        }
     }
 
     private Game evaluateResult(Game game, List<Integer> resultPlayer1, List<Integer> resultPlayer2){
