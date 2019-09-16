@@ -1,7 +1,6 @@
 package com.marketpulse.service.impl;
 
 import com.marketpulse.ParticipantType;
-import com.marketpulse.constants.ApplicationConstants;
 import com.marketpulse.dataobjects.Game;
 import com.marketpulse.dataobjects.Player;
 import com.marketpulse.dataobjects.Referee;
@@ -69,7 +68,7 @@ public class TournamentService implements ITournamentService {
         }
 
         // Referee creates the games for the tournament
-
+        this.refereeService.startTournament(tournamentPlayers);
 
     }
 

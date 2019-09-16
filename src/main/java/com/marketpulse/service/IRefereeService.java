@@ -11,5 +11,7 @@ public interface IRefereeService {
 
     Referee createReferee(RefereeVo refereeVo);
 
-    List<Game> createTournamentGames(List<Player> players);
+    void startTournament(List<Player> players) throws Exception;
+
+    void displayGameResult(Game game);
 }

@@ -1,6 +1,7 @@
 package com.marketpulse.activity.impl;
 
 import com.marketpulse.activity.IGamePlayExecutor;
+import com.marketpulse.constants.GameType;
 import com.marketpulse.dataobjects.Game;
 
 import java.util.List;
@@ -20,6 +21,11 @@ public class LeagueGamePlayExecutor implements IGamePlayExecutor {
     }
 
     @Override
+    public GameType getGameType() {
+        return GameType.LEAGUE;
+    }
+
+    @Override
     public List<Game> execute(List<Game> games) {
         return null;
     }
@@ -30,7 +36,9 @@ public class LeagueGamePlayExecutor implements IGamePlayExecutor {
     }
 
     @Override
-    public void notifiyReferee(List<Game> games) {
-
+    public void notifyReferee(Game game) {
+        // Notify referee to display result
+        this.getRefereeServiceInstance().displayGameResult(game);
     }
+
 }
