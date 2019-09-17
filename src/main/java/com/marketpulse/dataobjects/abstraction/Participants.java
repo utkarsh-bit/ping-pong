@@ -1,7 +1,7 @@
 package com.marketpulse.dataobjects.abstraction;
 
 
-import com.marketpulse.ParticipantType;
+import com.marketpulse.constants.ParticipantType;
 
 public class Participants {
 

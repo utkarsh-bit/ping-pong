@@ -1,4 +1,4 @@
-package com.marketpulse;
+package com.marketpulse.constants;
 
 public enum ParticipantType {
 

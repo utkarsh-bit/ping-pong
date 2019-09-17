@@ -13,7 +13,6 @@ public interface IRefereeService {
     /**
      * Function to create referee for the game
      * @param refereeVo VO for referee
-     * @return Referee Object
      */
     Referee createReferee(RefereeVo refereeVo);
 

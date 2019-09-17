@@ -1,10 +1,7 @@
 package com.marketpulse.service.impl;
 
-import com.marketpulse.ParticipantType;
-import com.marketpulse.dataobjects.Game;
 import com.marketpulse.dataobjects.Player;
 import com.marketpulse.dataobjects.Referee;
-import com.marketpulse.dataobjects.abstraction.Participants;
 import com.marketpulse.service.ITournamentService;
 import com.marketpulse.viewobjects.PlayerVo;
 import com.marketpulse.viewobjects.RefereeVo;
@@ -17,7 +14,6 @@ public class TournamentService implements ITournamentService {
     private static TournamentService instance;
 
     private Referee referee;
-    private List<Game> tournamentGames;
     private List<Player> tournamentPlayers;
 
     // Variables to access functionalities of other services
@@ -25,9 +21,7 @@ public class TournamentService implements ITournamentService {
     private PlayerService playerService;
 
     private TournamentService(){
-        tournamentGames = new ArrayList<>();
         tournamentPlayers = new ArrayList<>();
-
         // Get instances of helper classes
         refereeService = RefereeService.getInstance();
         playerService = PlayerService.getInstance();
@@ -57,7 +51,7 @@ public class TournamentService implements ITournamentService {
             tournamentPlayers.add(playerService.createPlayer(player));
         }
 
-        this.referee = refereeService.createReferee(refereeVo);
+        refereeService.createReferee(refereeVo);
 
         // Referee creates the games for the tournament
         this.refereeService.startTournament(tournamentPlayers);

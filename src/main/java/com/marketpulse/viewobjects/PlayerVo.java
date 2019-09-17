@@ -1,6 +1,6 @@
 package com.marketpulse.viewobjects;
 
-import com.marketpulse.ParticipantType;
+import com.marketpulse.constants.ParticipantType;
 
 public class PlayerVo {
 

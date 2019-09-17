@@ -25,7 +25,11 @@ public class RefereeService implements IRefereeService {
     // Map to hold the results of the games
     Map<GameType, List<GameResult>> results;
 
+    // Referee Object
+    Referee referee;
+
     private RefereeService(){
+        this.referee = null;
         this.gameService = GameService.getInstance();
         this.results = new LinkedHashMap<>();
     }
@@ -52,18 +56,22 @@ public class RefereeService implements IRefereeService {
         }
 
         // Create object for a referee
-        Referee referee = new Referee();
+        this.referee = new Referee();
         referee.setId(id);
         referee.setName(refereeVo.getName());
 
-        return referee;
+        return this.referee;
     }
 
     @Override
     public void startTournament(List<Player> players) throws Exception {
 
-        if(null == players || players.size() < 8){
+        if(null == players || players.size() < ApplicationConstants.playerCountForTournament){
             throw new Exception("Tournament cannot start without 8 players");
+        }
+
+        if(null == this.referee){
+            throw new Exception("Game cannot start without referee");
         }
 
         // Create GamePlay activity chain
@@ -81,7 +89,6 @@ public class RefereeService implements IRefereeService {
         System.out.println(gameType+" STAGE RESULTS - \n");
 
         for (Game game: games){
-//            System.out.println("---------------------------");
             System.out.println("RESULT FOR GAME: "+game.getGameId());
             System.out.println("GAME STAGE: "+game.getGameType().toString());
             System.out.println("PARTICIPANTS: "+game.getPlayer1().getName()+" V/S "+game.getPlayer2().getName());

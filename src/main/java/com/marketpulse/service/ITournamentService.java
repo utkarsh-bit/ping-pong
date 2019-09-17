@@ -1,6 +1,5 @@
 package com.marketpulse.service;
 
-import com.marketpulse.dataobjects.abstraction.Participants;
 import com.marketpulse.viewobjects.PlayerVo;
 import com.marketpulse.viewobjects.RefereeVo;
 

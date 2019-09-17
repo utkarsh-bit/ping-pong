@@ -38,5 +38,10 @@ public interface IGameService {
      */
     Game playGame(Game game) throws InterruptedException;
 
+    /**
+     * Function to start the tournament
+     * @param players
+     * @throws Exception
+     */
     void startTournament(List<Player> players) throws Exception;
 }

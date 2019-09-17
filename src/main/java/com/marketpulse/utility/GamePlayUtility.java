@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Class will be used to create threads in order run OFFENSIVE and DEFENSIVE PLAY simultaneously
+ */
 public class GamePlayUtility extends Thread {
 
     Player player;

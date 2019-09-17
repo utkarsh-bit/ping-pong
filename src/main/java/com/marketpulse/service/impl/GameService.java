@@ -72,18 +72,16 @@ public class GameService implements IGameService {
     @Override
     public void createTournamentStageGames(List<Player> players, GameType gameType) throws Exception {
 
+
+        // Validate the input
+        validateStageGameCreationInput(players, gameType);
+
         this.tournamentGames  = new ArrayList<>();
 
-        if(null != players && players.size() != 0 && players.size()% ApplicationConstants.participantsPerGame==0){
-
-            int iterator = players.size();
-            for(int i = 0; i<iterator; i+=2){
-                // Call to game service to create games
-                this.tournamentGames.add(this.createGame(players.get(i), players.get(i+1), gameType));
-            }
-
-        }else{
-            throw new Exception("Invalid Player List for game creation");
+        int iterator = players.size();
+        for(int i = 0; i<iterator; i+=2){
+            // Call to game service to create games
+            this.tournamentGames.add(this.createGame(players.get(i), players.get(i+1), gameType));
         }
     }
 
@@ -148,7 +146,14 @@ public class GameService implements IGameService {
         }
     }
 
-    private Game evaluateResult(Game game, List<Integer> resultPlayer1, List<Integer> resultPlayer2){
+    /**
+     * Function to evaluate result after the end of a game
+     * @param game Game object
+     * @param resultPlayer1 contains move info of player 1
+     * @param resultPlayer2 contains move info of player 2
+     * @return
+     */
+    public Game evaluateResult(Game game, List<Integer> resultPlayer1, List<Integer> resultPlayer2){
 
         // If player1 was playing OFFENSIVE
         if(game.getPlayer1().getGameMode().toString().equalsIgnoreCase(GameMode.OFFENSIVE.toString())){
@@ -184,5 +189,20 @@ public class GameService implements IGameService {
         }
 
         return game;
+    }
+
+    /** Function to validate input for game creation of a stage
+     * @param players Total players
+     * @param gameType Game type
+     * @throws Exception If validation fails
+     */
+    private void validateStageGameCreationInput(List<Player> players, GameType gameType) throws Exception {
+        if(gameType.equals(GameType.LEAGUE) && (players == null || players.size() != 8)){
+            throw new Exception("INVALID COUNT OF PlAYERS FOR LEAGUE STAGE.");
+        }else if(gameType.equals(GameType.SEMIS) && (players == null || players.size() != 4)){
+            throw new Exception("INVALID COUNT OF PlAYERS FOR SEMI STAGE.");
+        }else if(gameType.equals(GameType.FINAL) && (players == null || players.size() != 2)){
+            throw new Exception("INVALID COUNT OF PlAYERS FOR FINAL STAGE.");
+        }
     }
 }

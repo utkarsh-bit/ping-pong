@@ -1,5 +1,6 @@
 package com.marketpulse;
 
+import com.marketpulse.constants.ParticipantType;
 import com.marketpulse.service.impl.TournamentService;
 import com.marketpulse.viewobjects.PlayerVo;
 import com.marketpulse.viewobjects.RefereeVo;
@@ -28,8 +29,6 @@ public class Main {
             // Start Tournament
             TournamentService.getInstance().initiateTournament(players, referee);
 
-            System.out.println("");
-
         }catch (Exception e){
             logger.log(Level.FINE, "Error while executing tournament. Please contact System Admin", e);
         }
@@ -41,7 +40,7 @@ public class Main {
 
         // Add referee
         referee = new RefereeVo();
-        referee.setName("Referee");
+        referee.setName("DUMMY-REFEREE");
         referee.setParticipantType(ParticipantType.REFEREE);
 
         // Add Players
