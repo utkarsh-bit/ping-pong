@@ -31,10 +31,18 @@ public interface IGamePlayExecutor {
      * @param game
      */
     default void notifyReferee(Game game) {
-        // Notify referee to display result
-        this.getRefereeServiceInstance().displayGameResult(game);
         // Add game to result holder
         this.getRefereeServiceInstance().saveGameResult(game);
+    }
+
+    /**
+     * Function to display result at each stage of game
+     * @param games Games for which results are to be displayed
+     * @param gameType Current stage type
+     */
+    default void displayStageResults(List<Game> games, GameType gameType){
+        // Notify referee for the same
+        this.getRefereeServiceInstance().displayStageResult(games, gameType);
     }
 
     /**
@@ -57,7 +65,7 @@ public interface IGamePlayExecutor {
      * @return
      */
     boolean shouldExecute(List<Game> games);
-    
+
     /**
      * Function to create games for the current stage of tournament
      * @param players players involved in games

@@ -9,6 +9,7 @@ public class GameResult {
     private String loserName;
     private int loserPoint;
     private GameType gameType;
+    private String gameId;
 
     @Override
     public String toString() {
@@ -18,7 +19,16 @@ public class GameResult {
                 ", loserName='" + loserName + '\'' +
                 ", loserPoint=" + loserPoint +
                 ", gameType=" + gameType +
+                ", gameId='" + gameId + '\'' +
                 '}';
+    }
+
+    public String getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
     }
 
     public String getWinnerName() {

@@ -28,14 +28,19 @@ public class FinalGamePlayExecutor implements IGamePlayExecutor {
 
     @Override
     public List<Game> execute(List<Game> games) throws Exception {
+        System.out.println("STAGE STARTED: "+getGameType().toString()+"\n");
         if(shouldExecute(games)){
 
             for (Game game: games){
+                // Display info of game
+                this.getRefereeServiceInstance().displayGameInfo(game);
                 // Execute current game play
                 this.getGameServiceInstance().playGame(game);
                 // Notify referee for game result
                 this.notifyReferee(game);
             }
+            // Display stage results
+            this.displayStageResults(games, getGameType());
 
         }else{
             throw new Exception("Final games execution cannot be processed.");
@@ -53,14 +58,6 @@ public class FinalGamePlayExecutor implements IGamePlayExecutor {
         }
         return true;
     }
-
-//    @Override
-//    public void notifyReferee(Game game) {
-//        // Notify referee to display result
-//        this.getRefereeServiceInstance().displayGameResult(game);
-//        // Add game to result holder
-//        this.getRefereeServiceInstance().saveGameResult(game);
-//    }
 
     @Override
     public void createStageGames(List<Player> players) throws Exception {

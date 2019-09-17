@@ -129,6 +129,7 @@ public class GameService implements IGameService {
     @Override
     public void startTournament(List<Player> players) throws Exception {
 
+        System.out.println("TOURNAMENT BEGINS !!\n");
         for(IGamePlayExecutor playExecutor: this.gamePlayExecutors){
             // Create games for current stage
             playExecutor.createStageGames(players);

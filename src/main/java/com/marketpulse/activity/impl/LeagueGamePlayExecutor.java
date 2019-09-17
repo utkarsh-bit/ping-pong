@@ -31,13 +31,17 @@ public class LeagueGamePlayExecutor implements IGamePlayExecutor {
     public List<Game> execute(List<Game> games) throws Exception {
 
         if(shouldExecute(games)){
-
+            System.out.println("STAGE STARTED: "+getGameType().toString()+"\n");
             for (Game game: games){
+                // Display info of game
+                this.getRefereeServiceInstance().displayGameInfo(game);
                 // Execute current game play
                 this.getGameServiceInstance().playGame(game);
                 // Notify referee for game result
                 this.notifyReferee(game);
             }
+            // Display stage results
+            this.displayStageResults(games, getGameType());
 
         }else{
             throw new Exception("League games execution cannot be processed.");
