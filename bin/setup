@@ -1,4 +1,5 @@
 # Build the project
+mkdir ./out
 javac -cp ./src/main/java/ ./src/main/java/com/marketpulse/Main.java -d ./out/
 jar cvfm MarketPulse.jar ./src/main/resources/META-INF/MANIFEST.MF -C ./out/ .
 
